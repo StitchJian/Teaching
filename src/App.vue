@@ -1,26 +1,17 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <!-- 實作時請註解 -->
+  <grade-list />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import GradeList from './components/GradeList.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    GradeList
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss" scoped>
+@import "./assets/css/size.scss"
 </style>
