@@ -1,18 +1,28 @@
 <template>
   <div>
-    <h1>成績紀錄表</h1>
+    <h1 class="mt-2">成績紀錄表</h1>
     <br />
     <!-- 工具欄 -->
     <div class="grade-tool">
-      <button @click="createData">新增</button>
-      <button @click="deleteData">刪除</button>
+      <button type="button" class="btn btn-primary m-1" @click="createData">
+        新增
+      </button>
+      <button type="button" class="btn btn-danger m-1" @click="deleteData">
+        刪除
+      </button>
     </div>
     <br />
     <!-- 表格 -->
     <table>
       <thead>
         <tr>
-          <th><input type="checkbox" /></th>
+          <th>
+            <input
+              type="checkbox"
+              v-model="checkedAllValue"
+              @change="checkAll"
+            />
+          </th>
           <th>學號</th>
           <th>姓名</th>
           <th>成績</th>
@@ -38,7 +48,7 @@
         <tr>
           <td>新增</td>
           <td><input v-model="templateData.number" readonly /></td>
-          <td><input v-model="templateData.name" /></td>
+          <td><input ref="newName" v-model="templateData.name" /></td>
           <td>
             <input
               v-model="templateData.grade"
@@ -71,6 +81,7 @@ export default {
         checked: false,
       },
       checkList: [],
+      checkedAllValue: false,
     };
   },
   computed: {
@@ -85,6 +96,9 @@ export default {
         return 0;
       }
     },
+  },
+  mounted() {
+    this.$refs.newName.focus();
   },
   methods: {
     createData() {
@@ -102,6 +116,7 @@ export default {
         grade: 0,
         checked: false,
       };
+      this.$refs.newName.focus();
     },
     deleteData() {
       // 防呆
@@ -112,6 +127,8 @@ export default {
       });
       // 清空
       this.checkList = [];
+      this.checkedAllValue = this.checkedAllValue === true ? false : false;
+      this.$refs.newName.focus();
     },
     checkedData(index) {
       // 判斷是否有在勾選中
@@ -122,6 +139,16 @@ export default {
       } else {
         this.checkList.splice(checkIndex, 1);
       }
+    },
+    checkAll() {
+      // 確認全選狀態並改變勾選表值
+      if (this.checkedAllValue)
+        this.checkList = this.tableData.map((d, i) => i);
+      else this.checkList = [];
+      // 改變各item check狀態
+      this.tableData.forEach((d) => {
+        d.checked = this.checkedAllValue;
+      });
     },
   },
 };
@@ -139,6 +166,7 @@ table {
   border-collapse: collapse;
   width: 100%;
   display: block;
+  background-color: rgb(202, 223, 247);
   // 表頭
   thead {
     width: 100%;
