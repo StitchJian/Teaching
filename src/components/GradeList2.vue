@@ -184,7 +184,7 @@ table {
     overflow-y: scroll;
     overflow-x: hidden;
     width: 101%;
-    height: 200px;
+    height: 300px;
     display: block;
     background-color: rgba(218, 215, 215, 0.878);
     tr {

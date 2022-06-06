@@ -13,8 +13,7 @@
     <table>
       <thead>
         <tr>
-          <th></th>
-          <th>學號</th>
+          <th colspan="2">學號</th>
           <th>姓名</th>
           <th>成績</th>
           <th>編輯</th>
@@ -43,7 +42,7 @@
           <td>新增</td>
           <td><input v-model="templateData.number" readonly /></td>
           <td><input ref="newName" v-model="templateData.name" /></td>
-          <td>
+          <td colspan="2">
             <input
               v-model="templateData.grade"
               type="number"
@@ -51,7 +50,6 @@
               max="100"
             />
           </td>
-          <td></td>
         </tr>
         <tr>
           <td colspan="3">平均</td>
@@ -112,7 +110,7 @@ export default {
       this.$refs.newName.focus();
     },
     deleteData(index) {
-      this.tableData.splice(index, 1)
+      this.tableData.splice(index, 1);
       this.$refs.newName.focus();
     },
   },
@@ -138,10 +136,7 @@ table {
     display: block;
     th {
       border: 0.1rem solid black;
-      width: 600px;
-      &:first-child {
-        width: 50px;
-      }
+      width: 490px;
       &:last-child {
         width: 50px;
       }
@@ -152,7 +147,7 @@ table {
     overflow-y: scroll;
     overflow-x: hidden;
     width: 101%;
-    height: 200px;
+    height: 300px;
     display: block;
     background-color: rgba(218, 215, 215, 0.878);
     tr {
@@ -160,10 +155,7 @@ table {
       display: block;
       td {
         border: 0.1rem solid black;
-        width: 810px;
-        &:first-child {
-          width: 50px;
-        }
+        width: 490px;
         &:last-child {
           width: 50px;
         }
@@ -182,12 +174,12 @@ table {
         width: 100%;
       }
       border: 0.1rem solid black;
-      width: 599px;
+      width: 470px;
       &:first-child {
         width: 48px;
       }
-      &:last-child {
-        width: 50px;
+       &:last-child {
+        width: 540px;
       }
     }
   }
