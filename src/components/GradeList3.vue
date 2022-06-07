@@ -30,7 +30,7 @@
             <button
               type="button"
               class="btn btn-danger m-1"
-              @click="deleteData(index)"
+              @click="deleteData(data.number)"
             >
               X
             </button>
@@ -40,9 +40,8 @@
       <tfoot>
         <tr>
           <td>新增</td>
-          <td><input v-model="templateData.number" readonly /></td>
           <td><input ref="newName" v-model="templateData.name" /></td>
-          <td colspan="2">
+          <td>
             <input
               v-model="templateData.grade"
               type="number"
@@ -52,8 +51,8 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3">平均</td>
-          <td colspan="2">
+          <td colspan="2">平均</td>
+          <td>
             {{ gradeSum }}
           </td>
         </tr>
@@ -62,13 +61,14 @@
   </div>
 </template>
 <script>
+import * as api from "../api/grade.js";
 export default {
-  name: "GradeList1",
+  name: "GradeList3",
   data() {
     return {
       tableData: [],
       templateData: {
-        number: 1,
+        number: 0,
         name: "",
         grade: 0,
         checked: false,
@@ -90,28 +90,43 @@ export default {
   },
   mounted() {
     this.$refs.newName.focus();
+    this.reloadData();
   },
   methods: {
-    createData() {
+    async reloadData() {
+      await api.GetAllGrade.r().then((res) => {
+        this.tableData = res.data;
+      });
+    },
+    async createData() {
       // 防呆
       if (this.templateData.name.length == 0) return alert("請填入姓名");
-      // 新增暫存變數並將新增資料複製給值
-      let temp = {};
-      Object.assign(temp, this.templateData);
-      // 塞入資料陣列
-      this.tableData.push(temp);
-      // 還原新增資料
-      this.templateData = {
-        number: this.templateData.number + 1,
-        name: "",
-        grade: 0,
-        checked: false,
-      };
-      this.$refs.newName.focus();
+
+      await api.SaveGrade.r(this.templateData)
+        .then(() => {
+          this.reloadData();
+          // 還原新增資料
+          this.templateData = {
+            number: 0,
+            name: "",
+            grade: 0,
+            checked: false,
+          };
+          this.$refs.newName.focus();
+        })
+        .error((error) => {
+          console.log(error);
+        });
     },
-    deleteData(index) {
-      this.tableData.splice(index, 1);
-      this.$refs.newName.focus();
+    async deleteData(index) {
+      await api.DeleteGrade.r(index)
+        .then(() => {
+          this.reloadData();
+          this.$refs.newName.focus();
+        })
+        .error((error) => {
+          console.log(error);
+        });
     },
   },
 };
@@ -174,13 +189,7 @@ table {
         width: 100%;
       }
       border: 0.1rem solid black;
-      width: 470px;
-      &:first-child {
-        width: 48px;
-      }
-       &:last-child {
-        width: 540px;
-      }
+      width: 32vw;
     }
   }
 }

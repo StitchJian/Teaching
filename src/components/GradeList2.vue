@@ -70,7 +70,7 @@
 </template>
 <script>
 export default {
-  name: "GradeList",
+  name: "GradeList2",
   data() {
     return {
       tableData: [],
